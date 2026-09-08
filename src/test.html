@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bookmark Extender Test</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        button {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        pre {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f4f4f4;
+            border-radius: 8px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Bookmark Extender</h1>
+
+    <button id="loadBookmarks">
+        Load Bookmarks
+    </button>
+
+    <pre id="output">Waiting...</pre>
+
+    <script>
+        const button = document.getElementById("loadBookmarks");
+        const output = document.getElementById("output");
+
+        button.addEventListener("click", async () => {
+
+            output.textContent = "Loading...";
+
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: "GET_BOOKMARKS"
+                });
+
+                if (!response || !response.success) {
+                    throw new Error(
+                        response?.error || "Unknown error"
+                    );
+                }
+
+                output.textContent =
+                    JSON.stringify(response.tree, null, 2);
+
+            } catch (error) {
+
+                console.error(error);
+
+                output.textContent =
+                    "Error: " + error.message;
+            }
+        });
+    </script>
+
+</body>
+</html>
