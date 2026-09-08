@@ -4,14 +4,13 @@
   "version": "0.1.0",
   "description": "Extends the bookmark experience with automatic multi-row bookmark wrapping.",
   "permissions": [
-    "bookmarks",
-    "storage"
+    "bookmarks"
   ],
   "action": {
-    "default_title": "Bookmark Extender"
+    "default_title": "Bookmark Extender",
+    "default_popup": "src/test.html"
   },
   "background": {
     "service_worker": "src/background.js"
-  },
-  "options_page": "src/test.html"
+  }
 }

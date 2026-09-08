@@ -7,23 +7,25 @@ chrome.runtime.onStartup.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type === "GET_BOOKMARKS") {
-        chrome.bookmarks.getTree()
-            .then((tree) => {
-                sendResponse({
-                    success: true,
-                    tree
-                });
-            })
-            .catch((error) => {
-                console.error("Failed to read bookmarks:", error);
-
-                sendResponse({
-                    success: false,
-                    error: error.message
-                });
-            });
-
-        return true;
+    if (message.type !== "GET_BOOKMARKS") {
+        return;
     }
+
+    chrome.bookmarks.getTree()
+        .then((tree) => {
+            sendResponse({
+                success: true,
+                tree: tree
+            });
+        })
+        .catch((error) => {
+            console.error("Bookmark error:", error);
+
+            sendResponse({
+                success: false,
+                error: error.message
+            });
+        });
+
+    return true;
 });
