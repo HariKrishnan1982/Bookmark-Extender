@@ -1,16 +1,35 @@
 {
   "manifest_version": 3,
   "name": "Bookmark Extender",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "Extends the bookmark experience with automatic multi-row bookmark wrapping.",
   "permissions": [
-    "bookmarks"
+    "bookmarks",
+    "favicon",
+    "storage"
   ],
   "action": {
     "default_title": "Bookmark Extender",
     "default_popup": "src/test.html"
   },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  },
   "background": {
     "service_worker": "src/background.js"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/utils.js", "src/bookmarks-bar.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["_favicon/*", "src/bookmarks-bar.css"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ]
 }
